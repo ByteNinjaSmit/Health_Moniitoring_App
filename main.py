@@ -61,7 +61,11 @@ class Menu:
 
     def handle_menu_selection(self, choice):
         if choice == '1':
-            self.login_system.heart_rate_status()
+            age = self.login_system.calculate_age(self.login_system.user_info[1])
+            gender = self.login_system.user_info[2]
+            heart_rate = int(input("Enter your heart rate: "))
+            status = self.login_system.calculation.get_heart_rate_status(age, gender, heart_rate)
+            print("Heart Rate Status:", status)
         elif choice == '2':
             self.login_system.hydration_tracking()
         elif choice == '3':
@@ -254,6 +258,27 @@ class Calculation:
         print("Successfully Weight is Updated...")
         time.sleep(0.2)
         return current_weight
+    
+    def get_heart_rate_status(self, age, gender, heart_rate):
+        heart_rate_ranges = {
+            'male': {
+                (18, 25): {'Excellent': (49, 55), 'Good': (56, 61), 'Average': (61, 65), 'Poor': (70, 73), 'Critical': (82, float('inf'))},
+                # Add other age ranges for males
+            },
+            'female': {
+                (18, 25): {'Excellent': (54, 60), 'Good': (61, 65), 'Average': (66, 69), 'Poor': (74, 78), 'Critical': (85, float('inf'))},
+                # Add other age ranges for females
+            }
+        }
+
+        gender_lower = gender.lower()
+        for age_range, status_ranges in heart_rate_ranges[gender_lower].items():
+            if age >= age_range[0] and age <= age_range[1]:
+                for status, rate_range in status_ranges.items():
+                    if heart_rate >= rate_range[0] and heart_rate <= rate_range[1]:
+                        return status
+
+        return "Unknown"
 
 def main():
     login_system = LoginSystem()
