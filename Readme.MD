@@ -53,11 +53,12 @@ Before running the application, make sure to install the following Python packag
 - pandas
 - matplotlib
 - numpy
+- zscore
 
 You can install these packages using pip:
 
 ```bash
-pip install tkinter tkcalendar pandas matplotlib numpy
+pip install tkinter tkcalendar pandas matplotlib numpy spiro-zscore zscore
 ```
 
 ### Additional Imports
@@ -71,6 +72,7 @@ from tkcalendar import DateEntry
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from scipy.stats import zscore
 ```
 
 These imports are necessary for the proper functioning of the health monitoring application.
