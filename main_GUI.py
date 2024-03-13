@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import sqlite3
 from tkinter import messagebox
 import hashlib
@@ -11,14 +12,44 @@ class LoggedInScreen:
         self.username = username
         self.login_system_instance = login_system_instance
         self.root.title("Logged In")
+        
+        # Welcome message
         self.welcome_label = tk.Label(self.root, text=f"Welcome {self.username}", font=("Helvetica", 36))
-        self.welcome_label.pack(pady=50)
+        self.welcome_label.grid(row=0, column=0, columnspan=4, pady=50)
+        
+        # Logout button
         self.logout_button = tk.Button(self.root, text="Logout", command=self.logout)
-        self.logout_button.pack(side=tk.TOP, padx=20, pady=20, anchor='ne')
+        self.logout_button.grid(row=0, column=3, padx=20, pady=20, sticky='ne')
+        
+        # Square boxes
+        self.create_square_box("Personal Information")
+        self.create_square_box("Heart Rate Status")
+        self.create_square_box("Hydration Tracking")
+        self.create_square_box("Today's Intakes Calorie")
+        self.create_square_box("Update Weight & Update Height")
+        self.create_square_box("Blood Pressure")
+        self.create_square_box("Sleep & Exercise duration")
+        self.create_square_box("Monitor Health")
 
+        
     def logout(self):
         self.root.destroy()
         self.login_system_instance.home_screen()
+        
+    def create_square_box(self, text):
+        # Create a button instead of a label
+        box_button = tk.Button(self.root, text=text, font=("Helvetica", 12), fg="black", borderwidth=2, relief="solid", width=20, height=5, command=lambda: self.button_clicked(text))
+
+        # Calculate row and column for the button
+        row = (len(self.root.winfo_children()) - 1) // 4 + 1
+        column = (len(self.root.winfo_children()) - 1) % 4
+        box_button.grid(row=row, column=column, padx=10, pady=10)
+
+    def button_clicked(self, text):
+        messagebox.showinfo("Button Clicked", f"You clicked on: {text}")
+
+
+
 
 class LoginSystem:
     def __init__(self, root):
