@@ -35,7 +35,11 @@ class LoggedInScreen:
     def logout(self):
         self.root.destroy()
         self.login_system_instance.home_screen()
+    
+    def Personal_Information(self):
         
+    
+    
     def create_square_box(self, text):
         # Create a button instead of a label
         box_button = tk.Button(self.root, text=text, font=("Helvetica", 12), fg="black", borderwidth=2, relief="solid", width=20, height=5, command=lambda: self.button_clicked(text))
@@ -49,7 +53,11 @@ class LoggedInScreen:
         messagebox.showinfo("Button Clicked", f"You clicked on: {text}")
 
 
-
+class Calculation:
+    def bmi(self):
+        self.bmi=(weight/(height*height))  *703
+        return self.bmi
+    
 
 class LoginSystem:
     def __init__(self, root):

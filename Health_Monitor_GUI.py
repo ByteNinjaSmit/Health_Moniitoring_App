@@ -12,9 +12,8 @@ class HealthDataEntry:
         self.num_days = 0
         self.current_day = 1
         self.data = []
-
         self.create_num_days_entry()
-
+        
     def create_num_days_entry(self):
         self.num_days_window = tk.Toplevel(self.root)
         self.num_days_window.title("Enter Number of Days")
@@ -28,6 +27,7 @@ class HealthDataEntry:
         self.num_days_window.destroy()
         self.create_data_entry_fields()
 
+  
     def create_data_entry_fields(self):
         tk.Label(self.root, text=f"Day {self.current_day}").grid(row=0, column=0, columnspan=2)
         tk.Label(self.root, text="Date:").grid(row=1, column=0)

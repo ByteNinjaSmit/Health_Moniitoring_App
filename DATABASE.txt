@@ -1,0 +1,27 @@
+user
+password
+
+Name
+weight - CURRENT , LAST
+height - CURRENT , LAST
+BMI - CURRENT , LAST (automatic calculation)
+
+heart Rate - Current Last
+heart Rate - Good Health , Serouius Health
+
+water Intake:- Current day, Last
+Required Intake: auto calculate
+
+BP- curet , last
+BP - Good Health , Serouius Health
+
+Sleep Duration - current, last
+required Sleep Duration .
+
+exercise Duration: current , last
+Goal Set-  Automatic 
+
+calorie Intake - current , last
+required calorie intake - latest
+
+
