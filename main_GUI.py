@@ -36,7 +36,7 @@ class LoggedInScreen:
         self.root.destroy()
         self.login_system_instance.home_screen()
     
-    def Personal_Information(self):
+    # def Personal_Information(self):
         
     
     
@@ -53,10 +53,7 @@ class LoggedInScreen:
         messagebox.showinfo("Button Clicked", f"You clicked on: {text}")
 
 
-class Calculation:
-    def bmi(self):
-        self.bmi=(weight/(height*height))  *703
-        return self.bmi
+
     
 
 class LoginSystem:

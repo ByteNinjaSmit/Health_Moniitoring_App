@@ -25,3 +25,75 @@ calorie Intake - current , last
 required calorie intake - latest
 
 
+
+
+            'Date': self.entry_date.get(),
+            'HeartRate': float(self.entry_heart_rate.get()),
+            'BloodPressure': float(self.entry_blood_pressure.get()),
+            'SleepDuration': float(self.entry_sleep_duration.get()),
+            'ExerciseDuration': float(self.entry_exercise_duration.get()),
+            'CalorieIntake': float(self.entry_calorie_intake.get())
+
+
+
+def fitness_plan(current_bmi, current_weight_kg, target_bmi, daily_calorie_burn, diet_preference):
+    # Calculate the ideal weight based on the target BMI
+    height_m = ((current_weight_kg / current_bmi) ** 0.5)  # Assuming BMI = weight(kg) / height(m)^2
+    ideal_weight_kg = target_bmi * height_m ** 2
+
+    # Calculate the weight loss required to reach the ideal weight
+    weight_loss_kg = current_weight_kg - ideal_weight_kg
+
+    # Estimate the time to reach normal weight based on daily calorie burn
+    if daily_calorie_burn > 0:
+        weeks_required = weight_loss_kg * 7700 / daily_calorie_burn
+    else:
+        weeks_required = None
+
+    # Define meal plan based on diet preference
+    if diet_preference.lower() == 'vegetarian':
+        meal_plan = {
+            'breakfast': 'Avocado toast with tomatoes and spinach',
+            'snack1': 'Mixed nuts and seeds',
+            'lunch': 'Chickpea salad with quinoa and roasted vegetables',
+            'snack2': 'Hummus with carrot sticks',
+            'dinner': 'Vegetable stir-fry with tofu and brown rice'
+        }
+    else:
+        meal_plan = {
+            'breakfast': 'Whole grain oatmeal with fruit and nuts',
+            'snack1': 'Greek yogurt with berries',
+            'lunch': 'Grilled chicken salad with mixed greens and vinaigrette dressing',
+            'snack2': 'Carrot sticks with hummus',
+            'dinner': 'Baked salmon with quinoa and steamed vegetables'
+        }
+
+    # Output the recommended plan along with additional information
+    return {
+        'ideal_weight_kg': round(ideal_weight_kg, 2),
+        'weeks_required_to_reach_normal': round(weeks_required, 1) if weeks_required is not None else None,
+        'meal_plan': meal_plan
+    }
+
+# Example usage:
+current_bmi = 30  # Example current BMI
+current_weight_kg = 90  # Example current weight in kg
+target_bmi = 25  # Example target BMI
+
+# User's chosen daily calorie burn options
+daily_calorie_burn_options = [4000, 8000]
+
+# User's diet preference (vegetarian or non-vegetarian)
+diet_preference = 'non-veg'  # Change this to 'non-vegetarian' if desired
+
+for daily_calorie_burn in daily_calorie_burn_options:
+    fitness_plan_info = fitness_plan(current_bmi, current_weight_kg, target_bmi, daily_calorie_burn, diet_preference)
+    print(f"\nFor a daily calorie burn of {daily_calorie_burn} calories:")
+    if fitness_plan_info['weeks_required_to_reach_normal'] is not None:
+        print("Estimated Weeks to Reach Normal Weight:", fitness_plan_info['weeks_required_to_reach_normal'])
+    else:
+        print("Cannot estimate weeks required with zero or negative daily calorie burn.")
+    print("Ideal Weight (kg):", fitness_plan_info['ideal_weight_kg'])
+    print("Recommended Meal Plan:")
+    for meal, description in fitness_plan_info['meal_plan'].items():
+        print(f"{meal.capitalize()}: {description}")

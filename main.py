@@ -3,6 +3,14 @@ import os
 import time
 import msvcrt
 from datetime import datetime
+import pyfiglet 
+import tkinter as tk
+from tkinter import messagebox
+from tkcalendar import DateEntry
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from Health_Monitor_GUI import run_health_data_entry
 
 class AdditionalInfoCollector:
     def __init__(self, conn):
@@ -54,10 +62,11 @@ class Menu:
         print("1) Heart Rate Status")
         print("2) Hydration Tracking")
         print("3) Body Ratio & Fitness Check")
-        print("4) Calorie Calculator")
+        print("4) Check Physical Health Monitor")
         print("5) Update Weight")
         print("6) Update Height")
-        print("7) Logout")
+        print("7) Check Diet Plan")
+        print("8) Logout")
 
     def handle_menu_selection(self, choice):
         if choice == '1':
@@ -66,19 +75,45 @@ class Menu:
             heart_rate = int(input("Enter your heart rate: "))
             status = self.login_system.calculation.get_heart_rate_status(age, gender, heart_rate)
             print("Heart Rate Status:", status)
+            
         elif choice == '2':
             self.login_system.hydration_tracking()
+            
         elif choice == '3':
-            self.login_system.body_ratio_fitness_check()
+                height = self.login_system.user_info[3] 
+                weight = self.login_system.user_info[4]  
+                bmi= self.login_system.calculation.bmi(weight, height)
+                print(f"Your BMI is : {bmi:0,.2f}")
+                if bmi < 18.5:
+                    print( "Your Fitness Is: Underweight")
+                elif 18.5 <= bmi < 25:
+                    print ("Your Fitness Is: Normal weight")
+                elif 25 <= bmi < 30:
+                    print ("Your Fitness Is: Overweight")
+                else:
+                    print( "Your Fitness Is: Obese")
+                time.sleep(3)
+                
         elif choice == '4':
-            self.login_system.calorie_calculator()
+            run_health_data_entry()
+            
         elif choice == '5':
             updated_weight = self.login_system.calculation.update_weight(self.login_system.user_id)
             self.login_system.user_info[4] = updated_weight  # Update user's weight in user_info
             self.display_personal_information()
+            
         elif choice == '6':
             self.login_system.update_height()
         elif choice == '7':
+            height = self.login_system.user_info[3] 
+            weight = self.login_system.user_info[4] 
+            bmi= self.login_system.calculation.bmi(weight, height)
+            n_bmi=float(input("Enter Your Target BMI: "))
+            daily_calorie_burn_options = int(input("How Much Calorie You Burning Daily: "))
+            r_diet = input("You Are vegetarian Or Not(Yes/No): ")
+            self.login_system.calculation.fitness_plan(bmi,weight,n_bmi,daily_calorie_burn_options,r_diet)
+            
+        elif choice == '8':
             self.login_system.logout()
             return True  # Signal to exit menu loop
         else:
@@ -187,7 +222,9 @@ class LoginSystem:
             if not self.additional_info_provided:
                 self.additional_info_collector.collect_additional_info(self.user_id)  # Collect additional info if not provided
             print("Welcome back, {}!".format(user[3]))  # Display a welcome message
-            time.sleep(0.3)
+            result = pyfiglet.figlet_format(f"Welcome back, {(user[3])}", font = "slant"  ) 
+            print(result)
+            time.sleep(1)
         else:
             print("Invalid username or password")
             
@@ -202,6 +239,9 @@ class LoginSystem:
         except ValueError:
             return None
 
+    
+    
+    
     def logout(self):
         self.logged_in = False
         self.user_id = None
@@ -279,6 +319,71 @@ class Calculation:
                         return status
 
         return "Unknown"
+    
+    
+    def fitness_plan(self, current_bmi, current_weight_kg, target_bmi, daily_calorie_burn, diet_preference):
+            ideal_weight_kg = float(input("Enter Your Ideal Weight(Kg): "))
+
+            def calculate_ideal_weight(current_bmi, current_weight_kg, target_bmi):
+                height_m = ((current_weight_kg / current_bmi) ** 0.5)
+                return target_bmi * height_m ** 2
+
+            def calculate_weeks_to_reach_normal(current_weight_kg, ideal_weight_kg, daily_calorie_burn):
+                weight_loss_kg = current_weight_kg - ideal_weight_kg
+                if daily_calorie_burn > 0:
+                    return weight_loss_kg * 7700 / daily_calorie_burn
+                else:
+                    return None
+
+            def generate_meal_plan(diet_preference):
+                if diet_preference.lower() == 'yes':
+                    meal_plan = {
+                        'breakfast': 'Avocado toast with tomatoes and spinach',
+                        'snack1': 'Mixed nuts and seeds',
+                        'lunch': 'Chickpea salad with quinoa and roasted vegetables',
+                        'snack2': 'Hummus with carrot sticks',
+                        'dinner': 'Vegetable stir-fry with tofu and brown rice'
+                    }
+                else:
+                    meal_plan = {
+                        'breakfast': 'Whole grain oatmeal with fruit and nuts',
+                        'snack1': 'Greek yogurt with berries',
+                        'lunch': 'Grilled chicken salad with mixed greens and vinaigrette dressing',
+                        'snack2': 'Carrot sticks with hummus',
+                        'dinner': 'Baked salmon with quinoa and steamed vegetables'
+                    }
+                return meal_plan
+
+            ideal_weight_kg = calculate_ideal_weight(current_bmi, current_weight_kg, target_bmi)
+            weeks_required = calculate_weeks_to_reach_normal(current_weight_kg, ideal_weight_kg, daily_calorie_burn)
+            meal_plan = generate_meal_plan(diet_preference)
+
+            print(f"\nFor a daily calorie burn of {daily_calorie_burn} calories:")
+            if weeks_required is not None:
+                print("Estimated Weeks to Reach Normal Weight:", round(weeks_required, 1))
+            else:
+                print("Cannot estimate weeks required with zero or negative daily calorie burn.")
+            print("Ideal Weight (kg):", round(ideal_weight_kg, 2))
+            print("Recommended Meal Plan:")
+            for meal, description in meal_plan.items():
+                print(f"{meal.capitalize()}: {description}")
+            
+            time.sleep(10)
+            value_t=int(input("Enter 0 For Exit Fitnessss Plan: "))
+            if value_t==0:
+                time.sleep(0)
+            else:
+                time.sleep(10)
+                
+    def bmi(self,weight_kg, height_m):
+        height_m= (height_m/100)
+        bmi = weight_kg / (height_m ** 2)
+        return bmi
+
+class health_monitor:
+    def __init__(self) -> None:
+        pass
+        
 
 def main():
     login_system = LoginSystem()

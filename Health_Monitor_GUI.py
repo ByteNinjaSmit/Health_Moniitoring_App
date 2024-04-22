@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+
 class HealthDataEntry:
     def __init__(self, root):
         self.root = root
@@ -76,7 +77,8 @@ class HealthDataEntry:
         else:
             self.display_graphs()
             self.root.withdraw()  # Hide the main window
-
+            
+            
     def clear_entry_fields(self):
         self.entry_date.delete(0, tk.END)
         self.entry_heart_rate.delete(0, tk.END)
@@ -97,16 +99,34 @@ class HealthDataEntry:
 
         # Create figure
         fig, axs = plt.subplots(3, 2)
-
+        
+        
         # Plot heart rate over time
         axs[0, 0].plot(df['Date'], df['HeartRate'], marker='o', color='b')
+        axs[0,0].axhline(y=80, linestyle="--", color='r', label='80 BPM')
+        axs[0,0].axhline(y=60, linestyle="--", color='g', label='60 BPM')
         axs[0, 0].set_title('Heart Rate Over Time')
-        axs[0, 0].set_xlabel('Date')
+        axs[0, 0].set_xlabel('Date') 
         axs[0, 0].set_ylabel('Heart Rate (BPM)')
+        axs[0, 0].set_ylim(50, 110)  # Setting y-axis limits
         axs[0, 0].grid(True)
+        axs[0, 0].legend()  # Show legend for the dashed lines
 
+        # Determine health status based on heart rate
+        if max(df['HeartRate']) <= 80:
+            health_status = 'Your Health Is Good'
+            color='green'
+        else:
+            health_status = 'Your Health Is Serious'
+            color='red'
+
+        # Add health status to x-axis label
+        axs[0, 0].set_xlabel('Date (' + health_status + ')', fontsize=14, color=color)
+
+        # Noramal : 80 , At Risk: 120 , High BP: 140
         # Plot blood pressure over time
         axs[0, 1].plot(df['Date'], df['BloodPressure'], marker='o', color='r')
+        axs[0,1]
         axs[0, 1].set_title('Blood Pressure Over Time')
         axs[0, 1].set_xlabel('Date')
         axs[0, 1].set_ylabel('Systolic Blood Pressure')
@@ -147,16 +167,19 @@ class HealthDataEntry:
         canvas = FigureCanvasTkAgg(fig, master=graphs_window)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-        graphs_window.bind("<Escape>", lambda event: close_window(graphs_window))
+        graphs_window.bind("<Escape>", lambda event: close_window(graphs_window, self.root))
 
         # Bind the window closing event
-        graphs_window.protocol("WM_DELETE_WINDOW", lambda: close_window(graphs_window))
+        graphs_window.protocol("WM_DELETE_WINDOW", lambda: close_window(graphs_window, self.root))
 
-def close_window(window):
+def close_window(window, root):
     window.destroy()
     root.quit()  # Terminate the program
 
-if __name__ == "__main__":
+def run_health_data_entry():
     root = tk.Tk()
     app = HealthDataEntry(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    run_health_data_entry()
