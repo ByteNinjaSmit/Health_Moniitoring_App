@@ -307,10 +307,8 @@ class Calculation:
             },
             'female': {
                 (18, 25): {'Excellent': (54, 60), 'Good': (61, 65), 'Average': (66, 69), 'Poor': (74, 78), 'Critical': (85, float('inf'))},
-                # Add other age ranges for females
             }
         }
-
         gender_lower = gender.lower()
         for age_range, status_ranges in heart_rate_ranges[gender_lower].items():
             if age >= age_range[0] and age <= age_range[1]:
