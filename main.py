@@ -403,13 +403,13 @@ class Calculation:
             if current_intake < target:
                 time_of_day = check_time()
                 if time_of_day == "morning":
-                    intake = int(input("Enter the amount of water you drank in the morning (in ml): "))
+                    intake = int(input("Enter the amount of water you drank till the morning (in ml): "))
                 elif time_of_day == "afternoon":
-                    intake = int(input("Enter the amount of water you drank in the afternoon (in ml): "))
+                    intake = int(input("Enter the amount of water you drank till the afternoon (in ml): "))
                 elif time_of_day == "evening":
-                    intake = int(input("Enter the amount of water you drank in the evening (in ml): "))
+                    intake = int(input("Enter the amount of water you drank till the evening (in ml): "))
                 elif time_of_day == "night":
-                    intake = int(input("Enter the amount of water you drank at night (in ml): "))
+                    intake = int(input("Enter the amount of water you drank till night (in ml): "))
                 else:
                     intake = int(input("Enter the amount of water you drank (in ml): "))
                 

@@ -258,7 +258,6 @@ class HealthDataEntry:
         # stats_table = df.describe().to_string()
         # axs[2, 1].text(0.5, 0.5, stats_table, ha='center', va='center', fontsize=8)
 
-        # Replace basic statistics with overall health status summary
         overall_health_avg = df.mean(numeric_only=True).mean()
         overall_status_categories = {
             'Excellent': 'You are in excellent health condition. Keep up the good work!',
@@ -278,9 +277,16 @@ class HealthDataEntry:
 
         overall_status_description = overall_status_categories.get(overall_status, 'Undefined')
 
-        axs[2, 1].axis('off')  # Remove axis
-        overall_status_text = f"Overall Health Status: {overall_status} ({overall_status_description})"
-        axs[2, 1].text(0.5, 0.5, overall_status_text, ha='center', va='center', fontsize=10)
+        # Display overall health status report
+        report_window = tk.Toplevel()
+        report_window.title("Overall Health Report")
+
+        tk.Label(report_window, text="Overall Health Status", font=('Helvetica', 16, 'bold')).pack(pady=10)
+        
+        tk.Label(report_window, text=f"Brief Summary: {overall_status}", font=('Helvetica', 12)).pack(pady=5)
+        tk.Label(report_window, text=f"Details: {overall_status_description}", font=('Helvetica', 12)).pack(pady=5)
+
+        tk.Button(report_window, text="Close", command=report_window.destroy).pack(pady=10)
 
 
         # Adjust layout
