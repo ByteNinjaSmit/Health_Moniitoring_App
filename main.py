@@ -75,10 +75,9 @@ class Menu:
             heart_rate = int(input("Enter your heart rate: "))
             status = self.login_system.calculation.get_heart_rate_status(age, gender, heart_rate)
             print("Heart Rate Status:", status)
-            
         elif choice == '2':
-            self.login_system.hydration_tracking()
-            
+            # Call the track_hydration method
+            self.login_system.calculation.track_hydrations()
         elif choice == '3':
                 height = self.login_system.user_info[3] 
                 weight = self.login_system.user_info[4]  
@@ -377,7 +376,65 @@ class Calculation:
         height_m= (height_m/100)
         bmi = weight_kg / (height_m ** 2)
         return bmi
+    
+    def track_hydrations(self):
+        def check_time():
+            """Check the current time of the day."""
+            current_time = datetime.now().time()
+            if datetime.strptime("04:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("12:00:00", "%H:%M:%S").time():
+                return "morning"
+            elif datetime.strptime("12:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("16:00:00", "%H:%M:%S").time():
+                return "afternoon"
+            elif datetime.strptime("16:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("20:00:00", "%H:%M:%S").time():
+                return "evening"
+            elif datetime.strptime("20:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("00:00:00", "%H:%M:%S").time() or \
+                datetime.strptime("00:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("04:00:00", "%H:%M:%S").time():
+                return "night"
+            else:
+                return "other"
 
+        def track_hydration():
+            """Track hydration based on time of the day."""
+            target = int(input("Enter your daily hydration target (in ml): "))
+            current_intake = 0
+            
+            print("Hydration tracking has started!")
+            
+            if current_intake < target:
+                time_of_day = check_time()
+                if time_of_day == "morning":
+                    intake = int(input("Enter the amount of water you drank in the morning (in ml): "))
+                elif time_of_day == "afternoon":
+                    intake = int(input("Enter the amount of water you drank in the afternoon (in ml): "))
+                elif time_of_day == "evening":
+                    intake = int(input("Enter the amount of water you drank in the evening (in ml): "))
+                elif time_of_day == "night":
+                    intake = int(input("Enter the amount of water you drank at night (in ml): "))
+                else:
+                    intake = int(input("Enter the amount of water you drank (in ml): "))
+                
+                current_intake += intake
+                remaining = target - current_intake
+                
+                print(f"You have drank {current_intake} ml of water.")
+                if remaining > 0: 
+                    print(f"{remaining} ml remaining to reach your target. Aim to complete your target by 12 PM.")
+
+            if current_intake >= target:
+                print("Congratulations! You have reached your hydration target for the day.")
+                
+            # Pro Tip
+            print("\nPro Tip:")
+            print("Drink water slowly and consistently throughout the day rather than consuming large amounts at once.")
+            print("This helps your body to absorb and utilize the water more effectively, keeping you properly hydrated.")
+            time.sleep(10)
+            value_t=int(input("Enter 0 For Exit Fitnessss Plan: "))
+            if value_t==0:
+                time.sleep(0)
+            else:
+                time.sleep(10)
+        track_hydration()
+        
 class health_monitor:
     def __init__(self) -> None:
         pass

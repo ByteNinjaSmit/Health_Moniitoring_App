@@ -4,8 +4,6 @@ from tkcalendar import DateEntry
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-# from tkinter import font
-# from matplotlib import font as mfont
 from matplotlib.font_manager import FontProperties
 
 
