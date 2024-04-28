@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import time
+import hashlib
 from plyer import notification
 import msvcrt
 from datetime import datetime
@@ -170,7 +171,7 @@ class LoginSystem:
     def create_table(self):
         cursor = self.conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                        (id INTEGER PRIMARY KEY, username TEXT, password TEXT,
+                        (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL,
                         name TEXT, birth_date TEXT, gender TEXT, height REAL, weight REAL, additional_info_provided INTEGER DEFAULT 0)''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS weight_history
                         (id INTEGER PRIMARY KEY, user_id INTEGER, weight REAL, timestamp TEXT)''')  # Create weight_history table
@@ -189,6 +190,9 @@ class LoginSystem:
         print("\n------Creating New Account---\n\n")
         username = input("Enter username: ")
         password = input("Enter password: ")
+        
+        # hashed password
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
         # Check if the username already exists
         cursor = self.conn.cursor()
@@ -197,7 +201,7 @@ class LoginSystem:
             print("Account already exists!")
         else:
             # Insert new account into database
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
             self.conn.commit()
             print("Account created successfully!")
 
@@ -206,10 +210,13 @@ class LoginSystem:
         # Prompt user for username and password
         username = input("Enter username: ")
         password = input("Enter password: ")
-
+        
+        # Hash the password for comparison
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        
         # Check if credentials match any records in the database
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, hashed_password))
         user = cursor.fetchone()
         if user:
             print("Login successful!")
