@@ -86,16 +86,21 @@ class Menu:
                 height = self.login_system.user_info[3] 
                 weight = self.login_system.user_info[4]  
                 bmi= self.login_system.calculation.bmi(weight, height)
-                print(f"Your BMI is : {bmi:0,.2f}")
+                print(f"Your BMI (Body Mass Index) is : {bmi:0,.2f}")
                 if bmi < 18.5:
-                    print( "Your Fitness Is: Underweight")
+                    print("Your Fitness Is: Underweight")
+                    print("Pro tip: Consider consulting with a nutritionist to create a balanced diet plan.")
                 elif 18.5 <= bmi < 25:
-                    print ("Your Fitness Is: Normal weight")
+                    print("Your Fitness Is: Normal weight")
+                    print("Suggestion: Maintain a healthy lifestyle with regular exercise and balanced nutrition.")
                 elif 25 <= bmi < 30:
-                    print ("Your Fitness Is: Overweight")
+                    print("Your Fitness Is: Overweight")
+                    print("Suggestion: Incorporate more physical activity into your routine and focus on portion control.")
                 else:
-                    print( "Your Fitness Is: Obese")
-                time.sleep(3)
+                    print("Your Fitness Is: Obese")
+                    print("Suggestion: Prioritize lifestyle changes such as increased physical activity and dietary modifications.")
+                print("\n\nIt Hide In 10 Seconds")
+                time.sleep(10)
                 
         elif choice == '4':
             run_health_data_entry()
