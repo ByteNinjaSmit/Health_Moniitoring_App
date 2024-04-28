@@ -1,3 +1,5 @@
+Here's the updated README.md file with the added instructions for running the application, along with the requirements.txt instructions:
+
 # Health Monitor Application
 
 This repository contains a health monitoring application built with Python. The application includes features such as user authentication using a SQL database and health monitoring using data science techniques.
@@ -38,27 +40,28 @@ The `Main.py` file in this repository is responsible for handling user authentic
 
 The health monitoring functionality of the application is implemented in two files:
 
-- `Health_Monitor.ipynb`: This Jupyter Notebook contains the logic and analysis for health monitoring using data science techniques. with all Notes + All Methods in this file 
+- `Health_Monitor.ipynb`: This Jupyter Notebook contains the logic and analysis for health monitoring using data science techniques.
 
-- `health_monitor.py`: This Python script contains the implementation of the health monitoring functionality.This file in has Not (GUI).
+- `health_monitor.py`: This Python script contains the implementation of the health monitoring functionality without GUI.
 
-- `Health_Monitor_GUI.py`: This Python  file provides a graphical user interface (GUI) for interacting with the health monitoring functionality through
+- `Health_Monitor_GUI.py`: This Python file provides a graphical user interface (GUI) for interacting with the health monitoring functionality.
 
 ### Required Packages
 
 Before running the application, make sure to install the following Python packages:
 
+- sqlite3
+- plyer
+- pyfiglet
 - tkinter
 - tkcalendar
 - pandas
 - matplotlib
-- numpy
-- zscore
 
 You can install these packages using pip:
 
 ```bash
-pip install tkinter tkcalendar pandas matplotlib numpy spiro-zscore zscore
+pip install sqlite3 plyer pyfiglet tkinter tkcalendar pandas matplotlib
 ```
 
 ### Additional Imports
@@ -66,15 +69,26 @@ pip install tkinter tkcalendar pandas matplotlib numpy spiro-zscore zscore
 Make sure to include the following imports in your Python files:
 
 ```python
+import sqlite3
+import os
+import time
+from plyer import notification
+from datetime import datetime
+import pyfiglet 
 import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from scipy.stats import zscore
+from Health_Monitor_GUI import run_health_data_entry
 ```
 
-These imports are necessary for the proper functioning of the health monitoring application.
+### Running the Application
 
-Feel free to explore the repository and contribute to its development!
+To run the application, execute the `Main.py` file using Python:
+
+```bash
+pip install -r requirements.txt
+python Main.py
+```

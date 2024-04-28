@@ -420,6 +420,7 @@ class Calculation:
                 print(f"You have drank {current_intake} ml of water.")
                 if remaining > 0: 
                     print(f"{remaining} ml remaining to reach your target. Aim to complete your target by 12 PM.")
+                    # If user Not Drinked Water then every Hour He Got Drink Water Notification
                     notification.notify(
                         title="**Please Drink Water!!!!!!!!!!!.",
                         message = "The National Academies of Science, Engineering, and Medicine determine that an adequate daily fluid intake is : about 15.5 cups (3.7 liters) of fluids for men. About 11.5 cups (2.7 liters) of fluids a day for women.",
