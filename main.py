@@ -65,9 +65,9 @@ class Menu:
         print("3) Body Ratio & Fitness Check")
         print("4) Check Physical Health Monitor")
         print("5) Update Weight")
-        print("6) Update Height")
-        print("7) Check Diet Plan")
-        print("8) Logout")
+        # print("6) Update Height")
+        print("6) Check Diet Plan")
+        print("7) Logout")
 
     def handle_menu_selection(self, choice):
         if choice == '1':
@@ -75,7 +75,9 @@ class Menu:
             gender = self.login_system.user_info[2]
             heart_rate = int(input("Enter your heart rate: "))
             status = self.login_system.calculation.get_heart_rate_status(age, gender, heart_rate)
-            print("Heart Rate Status:", status)
+            print("Your Heart Rate Status:", status)
+            print("\n\nIt Will Hide In 5 Second")
+            time.sleep(5)
         elif choice == '2':
             # Call the track_hydration method
             self.login_system.calculation.track_hydrations()
@@ -102,9 +104,9 @@ class Menu:
             self.login_system.user_info[4] = updated_weight  # Update user's weight in user_info
             self.display_personal_information()
             
+        # elif choice == '6':
+        #     self.login_system.update_height()
         elif choice == '6':
-            self.login_system.update_height()
-        elif choice == '7':
             height = self.login_system.user_info[3] 
             weight = self.login_system.user_info[4] 
             bmi= self.login_system.calculation.bmi(weight, height)
@@ -113,7 +115,7 @@ class Menu:
             r_diet = input("You Are vegetarian Or Not(Yes/No): ")
             self.login_system.calculation.fitness_plan(bmi,weight,n_bmi,daily_calorie_burn_options,r_diet)
             
-        elif choice == '8':
+        elif choice == '7':
             self.login_system.logout()
             return True  # Signal to exit menu loop
         else:
@@ -301,22 +303,22 @@ class Calculation:
     
     def get_heart_rate_status(self, age, gender, heart_rate):
         heart_rate_ranges = {
-            'male': {
+            'M': {
                 (18, 25): {'Excellent': (49, 55), 'Good': (56, 61), 'Average': (61, 65), 'Poor': (70, 73), 'Critical': (82, float('inf'))},
                 # Add other age ranges for males
             },
-            'female': {
+            'F': {
                 (18, 25): {'Excellent': (54, 60), 'Good': (61, 65), 'Average': (66, 69), 'Poor': (74, 78), 'Critical': (85, float('inf'))},
             }
         }
-        gender_lower = gender.lower()
-        for age_range, status_ranges in heart_rate_ranges[gender_lower].items():
+        gender_upper = gender.upper()
+        for age_range, status_ranges in heart_rate_ranges[gender_upper].items():
             if age >= age_range[0] and age <= age_range[1]:
                 for status, rate_range in status_ranges.items():
                     if heart_rate >= rate_range[0] and heart_rate <= rate_range[1]:
                         return status
 
-        return "Unknown"
+        return status
     
     
     def fitness_plan(self, current_bmi, current_weight_kg, target_bmi, daily_calorie_burn, diet_preference):
