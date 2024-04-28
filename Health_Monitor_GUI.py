@@ -254,9 +254,9 @@ class HealthDataEntry:
 
 
         # # Basic statistics
-        # axs[2, 1].axis('off')
-        # stats_table = df.describe().to_string()
-        # axs[2, 1].text(0.5, 0.5, stats_table, ha='center', va='center', fontsize=8)
+        axs[2, 1].axis('off')
+        stats_table = df.describe().to_string()
+        axs[2, 1].text(0.5, 0.5, stats_table, ha='center', va='center', fontsize=8)
 
         overall_health_avg = df.mean(numeric_only=True).mean()
         overall_status_categories = {

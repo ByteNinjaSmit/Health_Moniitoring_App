@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import time
+from plyer import notification
 import msvcrt
 from datetime import datetime
 import pyfiglet 
@@ -411,7 +412,7 @@ class Calculation:
                 elif time_of_day == "night":
                     intake = int(input("Enter the amount of water you drank till night (in ml): "))
                 else:
-                    intake = int(input("Enter the amount of water you drank (in ml): "))
+                    intake = int(input("Enter the amount of water till you drank (in ml): "))
                 
                 current_intake += intake
                 remaining = target - current_intake
@@ -419,6 +420,13 @@ class Calculation:
                 print(f"You have drank {current_intake} ml of water.")
                 if remaining > 0: 
                     print(f"{remaining} ml remaining to reach your target. Aim to complete your target by 12 PM.")
+                    notification.notify(
+                        title="**Please Drink Water!!!!!!!!!!!.",
+                        message = "The National Academies of Science, Engineering, and Medicine determine that an adequate daily fluid intake is : about 15.5 cups (3.7 liters) of fluids for men. About 11.5 cups (2.7 liters) of fluids a day for women.",
+                        app_icon="icon.ico",  # Using raw string literal
+                        timeout = 10
+                    )
+
 
             if current_intake >= target:
                 print("Congratulations! You have reached your hydration target for the day.")
@@ -427,7 +435,7 @@ class Calculation:
             print("\nPro Tip:")
             print("Drink water slowly and consistently throughout the day rather than consuming large amounts at once.")
             print("This helps your body to absorb and utilize the water more effectively, keeping you properly hydrated.")
-            time.sleep(10)
+            # time.sleep(10)
             value_t=int(input("Enter 0 For Exit Fitnessss Plan: "))
             if value_t==0:
                 time.sleep(0)
