@@ -20,6 +20,8 @@ class AdditionalInfoCollector:
 
     def collect_additional_info(self, user_id):
         # Prompt user to enter additional information
+        print("\n\n---Additional Information ---\n")
+        print("Note: After Additional Information Store Successfully then Once Logout Again Log In.\n\n")
         name = input("Enter your name: ")
         birth_date = input("Enter your birth date (dd-mm-yyyy): ")
         gender = input("Enter your gender (M/F): ")
@@ -32,6 +34,7 @@ class AdditionalInfoCollector:
                        (name, birth_date, gender, height, weight, user_id))
         self.conn.commit()
         print("Additional information stored successfully!")
+        # print("")
         time.sleep(1)
 
 class Menu:
@@ -314,6 +317,9 @@ class Calculation:
         return current_weight
     
     def get_heart_rate_status(self, age, gender, heart_rate):
+        if age is None:
+            raise ValueError("Age cannot be None")
+        
         heart_rate_ranges = {
             'M': {
                 (18, 25): {'Excellent': (49, 55), 'Good': (56, 61), 'Average': (61, 65), 'Poor': (70, 73), 'Critical': (82, float('inf'))},
@@ -323,14 +329,16 @@ class Calculation:
                 (18, 25): {'Excellent': (54, 60), 'Good': (61, 65), 'Average': (66, 69), 'Poor': (74, 78), 'Critical': (85, float('inf'))},
             }
         }
+        
         gender_upper = gender.upper()
         for age_range, status_ranges in heart_rate_ranges[gender_upper].items():
-            if age >= age_range[0] and age <= age_range[1]:
+            if age_range[0] <= age <= age_range[1]:
                 for status, rate_range in status_ranges.items():
-                    if heart_rate >= rate_range[0] and heart_rate <= rate_range[1]:
+                    if rate_range[0] <= heart_rate <= rate_range[1]:
                         return status
 
-        return status
+        return status  # or specify a default status or raise an exception
+
     
     
     def fitness_plan(self, current_bmi, current_weight_kg, target_bmi, daily_calorie_burn, diet_preference):
