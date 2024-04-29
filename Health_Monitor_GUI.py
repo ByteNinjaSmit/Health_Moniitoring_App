@@ -19,10 +19,22 @@ class HealthDataEntry:
     def create_num_days_entry(self):
         self.num_days_window = tk.Toplevel(self.root)
         self.num_days_window.title("Enter Number of Days")
+        
+        # Make it fullscreen
+        self.num_days_window.attributes('-fullscreen', True)
+        
+        # Calculate the position for centering the window
+        screen_width = self.num_days_window.winfo_screenwidth()
+        screen_height = self.num_days_window.winfo_screenheight()
+        
         tk.Label(self.num_days_window, text="Enter the number of days:").pack()
         self.entry_num_days = tk.Entry(self.num_days_window)
         self.entry_num_days.pack()
         tk.Button(self.num_days_window, text="Submit", command=self.set_num_days).pack()
+
+        # Center the window after widgets are added
+        self.num_days_window.geometry('+{}+{}'.format((screen_width - self.num_days_window.winfo_reqwidth()) // 2,
+                                                    (screen_height - self.num_days_window.winfo_reqheight()) // 2))
 
     def set_num_days(self):
         self.num_days = int(self.entry_num_days.get())
@@ -31,33 +43,39 @@ class HealthDataEntry:
 
   
     def create_data_entry_fields(self):
-        tk.Label(self.root, text=f"Day {self.current_day}").grid(row=0, column=0, columnspan=2)
-        tk.Label(self.root, text="Date:").grid(row=1, column=0)
-        self.entry_date = DateEntry(self.root, width=12, background='darkblue',
+        self.data_entry_window = tk.Toplevel(self.root)
+        self.data_entry_window.title("Data Entry")
+
+        # Make it fullscreen
+        self.data_entry_window.attributes('-fullscreen', True)
+
+        tk.Label(self.data_entry_window, text=f"Day {self.current_day}").grid(row=0, column=0, columnspan=2)
+        tk.Label(self.data_entry_window, text="Date:").grid(row=1, column=0)
+        self.entry_date = DateEntry(self.data_entry_window, width=12, background='darkblue',
                                     foreground='white', borderwidth=2)
         self.entry_date.grid(row=1, column=1)
 
-        tk.Label(self.root, text="Heart Rate (BPM):").grid(row=2, column=0)
-        self.entry_heart_rate = tk.Entry(self.root)
+        tk.Label(self.data_entry_window, text="Heart Rate (BPM):").grid(row=2, column=0)
+        self.entry_heart_rate = tk.Entry(self.data_entry_window)
         self.entry_heart_rate.grid(row=2, column=1)
 
-        tk.Label(self.root, text="Blood Pressure (Systolic BP):").grid(row=3, column=0)
-        self.entry_blood_pressure = tk.Entry(self.root)
+        tk.Label(self.data_entry_window, text="Blood Pressure (Systolic BP):").grid(row=3, column=0)
+        self.entry_blood_pressure = tk.Entry(self.data_entry_window)
         self.entry_blood_pressure.grid(row=3, column=1)
 
-        tk.Label(self.root, text="Sleep Duration (Hours):").grid(row=4, column=0)
-        self.entry_sleep_duration = tk.Entry(self.root)
+        tk.Label(self.data_entry_window, text="Sleep Duration (Hours):").grid(row=4, column=0)
+        self.entry_sleep_duration = tk.Entry(self.data_entry_window)
         self.entry_sleep_duration.grid(row=4, column=1)
 
-        tk.Label(self.root, text="Exercise Duration (Minutes):").grid(row=5, column=0)
-        self.entry_exercise_duration = tk.Entry(self.root)
+        tk.Label(self.data_entry_window, text="Exercise Duration (Minutes):").grid(row=5, column=0)
+        self.entry_exercise_duration = tk.Entry(self.data_entry_window)
         self.entry_exercise_duration.grid(row=5, column=1)
 
-        tk.Label(self.root, text="Calorie Intake (Calories):").grid(row=6, column=0)
-        self.entry_calorie_intake = tk.Entry(self.root)
+        tk.Label(self.data_entry_window, text="Calorie Intake (Calories):").grid(row=6, column=0)
+        self.entry_calorie_intake = tk.Entry(self.data_entry_window)
         self.entry_calorie_intake.grid(row=6, column=1)
 
-        tk.Button(self.root, text="Submit", command=self.submit_data).grid(row=7, columnspan=2)
+        tk.Button(self.data_entry_window, text="Submit", command=self.submit_data).grid(row=7, columnspan=2)
 
     def submit_data(self):
         self.data.append({
