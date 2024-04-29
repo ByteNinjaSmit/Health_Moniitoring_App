@@ -1,5 +1,3 @@
-Here's the updated README.md file with the added instructions for running the application, along with the requirements.txt instructions:
-
 # Health Monitor Application
 
 This repository contains a health monitoring application built with Python. The application includes features such as user authentication using a SQL database and health monitoring using data science techniques.
