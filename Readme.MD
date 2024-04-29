@@ -51,7 +51,7 @@ deactivate
    ```
 5. Run the application by executing the `Main.py` file:
    ```bash
-   python Main.py
+   python main.py
    ```
 6. Follow the on-screen instructions to interact with the application and explore its features.
 
@@ -62,7 +62,7 @@ Feel free to explore the code and contribute to its development!
 
 ### Database Connected File
 
-The `Main.py` file in this repository is responsible for handling user authentication and database connection.
+The `main.py` file in this repository is responsible for handling user authentication and database connection.
 
 ### Health Monitor
 
