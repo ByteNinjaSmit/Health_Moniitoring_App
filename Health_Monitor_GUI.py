@@ -43,40 +43,28 @@ class HealthDataEntry:
 
   
     def create_data_entry_fields(self):
-        self.data_entry_window = tk.Toplevel(self.root)
-        self.data_entry_window.title("Data Entry")
-
-        # Make it fullscreen
-        self.data_entry_window.attributes('-fullscreen', True)
-
-        tk.Label(self.data_entry_window, text=f"Day {self.current_day}").grid(row=0, column=0, columnspan=2)
-        tk.Label(self.data_entry_window, text="Date:").grid(row=1, column=0)
-        self.entry_date = DateEntry(self.data_entry_window, width=12, background='darkblue',
-                                    foreground='white', borderwidth=2)
-        self.entry_date.grid(row=1, column=1)
-
-        tk.Label(self.data_entry_window, text="Heart Rate (BPM):").grid(row=2, column=0)
-        self.entry_heart_rate = tk.Entry(self.data_entry_window)
-        self.entry_heart_rate.grid(row=2, column=1)
-
-        tk.Label(self.data_entry_window, text="Blood Pressure (Systolic BP):").grid(row=3, column=0)
-        self.entry_blood_pressure = tk.Entry(self.data_entry_window)
-        self.entry_blood_pressure.grid(row=3, column=1)
-
-        tk.Label(self.data_entry_window, text="Sleep Duration (Hours):").grid(row=4, column=0)
-        self.entry_sleep_duration = tk.Entry(self.data_entry_window)
-        self.entry_sleep_duration.grid(row=4, column=1)
-
-        tk.Label(self.data_entry_window, text="Exercise Duration (Minutes):").grid(row=5, column=0)
-        self.entry_exercise_duration = tk.Entry(self.data_entry_window)
-        self.entry_exercise_duration.grid(row=5, column=1)
-
-        tk.Label(self.data_entry_window, text="Calorie Intake (Calories):").grid(row=6, column=0)
-        self.entry_calorie_intake = tk.Entry(self.data_entry_window)
-        self.entry_calorie_intake.grid(row=6, column=1)
-
-        tk.Button(self.data_entry_window, text="Submit", command=self.submit_data).grid(row=7, columnspan=2)
-
+            tk.Label(self.root, text=f"Day {self.current_day}").grid(row=0, column=0, columnspan=2)
+            tk.Label(self.root, text="Date:").grid(row=1, column=0)
+            self.entry_date = DateEntry(self.root, width=12, background='darkblue',
+                                        foreground='white', borderwidth=2)
+            self.entry_date.grid(row=1, column=1)
+            tk.Label(self.root, text="Heart Rate (BPM):").grid(row=2, column=0)
+            self.entry_heart_rate = tk.Entry(self.root)
+            self.entry_heart_rate.grid(row=2, column=1)
+            tk.Label(self.root, text="Blood Pressure (Systolic BP):").grid(row=3, column=0)
+            self.entry_blood_pressure = tk.Entry(self.root)
+            self.entry_blood_pressure.grid(row=3, column=1)
+            tk.Label(self.root, text="Sleep Duration (Hours):").grid(row=4, column=0)
+            self.entry_sleep_duration = tk.Entry(self.root)
+            self.entry_sleep_duration.grid(row=4, column=1)
+            tk.Label(self.root, text="Exercise Duration (Minutes):").grid(row=5, column=0)
+            self.entry_exercise_duration = tk.Entry(self.root)
+            self.entry_exercise_duration.grid(row=5, column=1)
+            tk.Label(self.root, text="Calorie Intake (Calories):").grid(row=6, column=0)
+            self.entry_calorie_intake = tk.Entry(self.root)
+            self.entry_calorie_intake.grid(row=6, column=1)
+            tk.Button(self.root, text="Submit", command=self.submit_data).grid(row=7, columnspan=2)
+            
     def submit_data(self):
         self.data.append({
             'Date': self.entry_date.get(),
@@ -173,6 +161,10 @@ class HealthDataEntry:
         axs[0, 1].axhline(y=100, linestyle='--', color='b', label='100 mmHg')
         axs[0, 1].axhline(y=130, linestyle='--', color='g', label='130 mmHg')
         axs[0, 1].legend()
+
+        # Determine blood pressure health status based on systolic blood pressure
+        # Define blood pressure health status categories
+        bp_status = ''  # Initialize bp_status with a default value
 
         # Determine blood pressure health status based on systolic blood pressure
         # Define blood pressure health status categories
