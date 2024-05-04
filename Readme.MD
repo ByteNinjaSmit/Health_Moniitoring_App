@@ -14,30 +14,6 @@ To get started with the application, follow the steps below:
 
 Showed At Last In detailed Information
 
-### Start in Virtual Environment
-
-Before running the application, it's recommended to set up a virtual environment to manage dependencies.
-
-#### For Windows:
-
-```bash
-myenv\Scripts\activate
-```
-
-#### For macOS / Linux:
-
-```bash
-source myenv/bin/activate
-```
-
-#### Deactivate Virtual Environment:
-
-To deactivate the virtual environment, simply run:
-
-```bash
-deactivate
-```
-
 ## How to Run the Application
 
 1. Make sure you have Python installed on your system.
