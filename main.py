@@ -69,9 +69,9 @@ class Menu:
         print("3) Body Ratio & Fitness Check")
         print("4) Check Physical Health Monitor")
         print("5) Update Weight")
-        # print("6) Update Height")
-        print("6) Check Diet Plan")
-        print("7) Logout")
+        print("6) Step Count")
+        print("7) Check Diet Plan")
+        print("8) Logout")
 
     def handle_menu_selection(self, choice):
         if choice == '1':
@@ -113,9 +113,10 @@ class Menu:
             self.login_system.user_info[4] = updated_weight  # Update user's weight in user_info
             self.display_personal_information()
             
-        # elif choice == '6':
-        #     self.login_system.update_height()
         elif choice == '6':
+            self.login_system.calculation.track_step()
+        
+        elif choice == '7':
             height = self.login_system.user_info[3] 
             weight = self.login_system.user_info[4] 
             bmi= self.login_system.calculation.bmi(weight, height)
@@ -124,7 +125,7 @@ class Menu:
             r_diet = input("You Are vegetarian Or Not(Yes/No): ")
             self.login_system.calculation.fitness_plan(bmi,weight,n_bmi,daily_calorie_burn_options,r_diet)
             
-        elif choice == '7':
+        elif choice == '8':
             self.login_system.logout()
             return True  # Signal to exit menu loop
         else:
@@ -394,7 +395,73 @@ class Calculation:
                 time.sleep(0)
             else:
                 time.sleep(10)
-                
+    
+
+    def track_step(self):
+        def check_time():
+            """Check the current time of the day."""
+            current_time = datetime.now().time()
+            if datetime.strptime("04:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("12:00:00", "%H:%M:%S").time():
+                return "morning"
+            elif datetime.strptime("12:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("16:00:00", "%H:%M:%S").time():
+                return "afternoon"
+            elif datetime.strptime("16:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("20:00:00", "%H:%M:%S").time():
+                return "evening"
+            elif datetime.strptime("20:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("00:00:00", "%H:%M:%S").time() or \
+                datetime.strptime("00:00:00", "%H:%M:%S").time() <= current_time < datetime.strptime("04:00:00", "%H:%M:%S").time():
+                return "night"
+            else:
+                return "other"
+        
+        def track_steps():
+            """Track step count based on time of the day."""
+            # Initialize variables
+            target_steps = int(input("Enter your daily step target: "))
+            current_steps = 0
+            
+            print("Step tracking has started!")
+            
+            #using while for check repated till goal is Complete 
+            
+            # while current_steps < target_steps: 
+            time_of_day = check_time()
+            steps = int(input(f"Enter the steps you walked till {time_of_day}: "))
+            current_steps += steps
+            remaining_steps = target_steps - current_steps
+            print(f"You have walked {current_steps} steps.")
+            if remaining_steps > 0:
+                print(f"{remaining_steps} steps remaining to reach your target.")
+                notification.notify(
+                    title="Your Targeted Goal Remaining",
+                    message = "Hey there! Noticed you haven't completed your daily goal yet. Just a friendly reminder to stay on track. You got this!",
+                    app_icon="icon1.ico",  # Using raw string literal
+                    timeout = 10
+                )
+            # Wait for an hour before checking step count again
+            # time.sleep(3600)  # 3600 seconds = 1 hour
+            
+            if steps >= target_steps:
+                print("Congratulations! You have reached your step target for the day.")
+                notification.notify(
+                    title="Congragulation!!!! You Reached Target ",
+                    message = "Congratulations on completing your daily goal! Keep up the great work and continue striving towards your aspirations. You're doing fantastic!",
+                    app_icon="icon1.ico",  # Using raw string literal
+                    timeout = 10
+                )
+            
+            # Pro Tip
+            print("\nPro Tip:")
+            print("Remember to incorporate physical activity into your daily routine to achieve your step goal.")
+        
+            value_t=int(input("Enter 0 For Exit Hydration Tracking: "))
+            if value_t==0:
+                time.sleep(0)
+            else:
+                time.sleep(10)
+
+        track_steps()
+
+         
     def bmi(self,weight_kg, height_m):
         height_m= (height_m/100)
         bmi = weight_kg / (height_m ** 2)
@@ -453,13 +520,19 @@ class Calculation:
 
             if current_intake >= target:
                 print("Congratulations! You have reached your hydration target for the day.")
+                notification.notify(
+                        title="**Stay Hydrated!!!!!!!!!!!!.",
+                        message = "Congratulations! You've reached your hydration target for the day. Remember, staying hydrated is essential for your health. Keep it up!",
+                        app_icon="icon.ico",  # Using raw string literal
+                        timeout = 10
+                    )
                 
             # Pro Tip
             print("\nPro Tip:")
             print("Drink water slowly and consistently throughout the day rather than consuming large amounts at once.")
             print("This helps your body to absorb and utilize the water more effectively, keeping you properly hydrated.")
             # time.sleep(10)
-            value_t=int(input("Enter 0 For Exit Fitnessss Plan: "))
+            value_t=int(input("Enter 0 For Exit Hydration Tracking: "))
             if value_t==0:
                 time.sleep(0)
             else:
